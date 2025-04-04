@@ -1,0 +1,8 @@
+services:
+  tf-app:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8888:8888"
+    command: jupyter notebook --ip=0.0.0.0 --allow-root
