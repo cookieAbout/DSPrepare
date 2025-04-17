@@ -7,4 +7,8 @@ WORKDIR /home/svpanchenko
 # мой комп -> контейнер
 COPY ./test_loop_script.py ./test_loop_script.py
 
-#ENTRYPOINT ["top", "-b"]
+RUN touch hello.sh && echo "echo 'Hello from container'" > hello.sh
+
+ENTRYPOINT ["top", "-b"]
+
+#CMD ["top"]
