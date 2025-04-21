@@ -2,7 +2,12 @@
 import pandas as pd
 import scipy.stats
 
-file = pd.read_csv('./Files/Температура, осадки по регионам.csv')
+file = pd.read_csv(
+    filepath_or_buffer='./Files/Температура, осадки по регионам.csv',
+    # dtype={'фактическая температура январь': 'float'},
+    decimal=',',
+    keep_default_na=False
+)
 rename_head = {
     'Название региона': 'region_name',
     'Код региона': 'region_code',
@@ -27,7 +32,13 @@ def means_median_temp(file: pd.DataFrame):
 
     # return file.describe()
     # return file.head()
-    return type(file['fact_temp_ja'][0])  #, file['fact_temp_ju']
+    ja = file['fact_temp_ja']
+    ju = file['fact_temp_ju']
+    means = {
+        'jan_mean': ja.mean(),
+        'jul_mean': ju.mean(),
+    }
+    return means
 
 
 df = renames_colums_df(file)
