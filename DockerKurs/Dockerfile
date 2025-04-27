@@ -61,8 +61,13 @@
 ### точка входа в контейнер
 #ENTRYPOINT ["python3", "app.py"]
 
-FROM ubuntu:22.04
+#FROM ubuntu:22.04
+#WORKDIR /app
+#COPY script.sh script.sh
+#COPY names.txt names.txt
+#ENTRYPOINT ["bash", "script.sh"]
+
+FROM python:3.10
 WORKDIR /app
-COPY script.sh script.sh
-COPY names.txt names.txt
-ENTRYPOINT ["bash", "script.sh"]
+COPY script.py script.py
+ENTRYPOINT ["python", "-u", "script.py"]
