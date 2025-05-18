@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from FastAPITry.core.models import db_helper
+from core.models import db_helper
 from . import crud
 from .dependencies import product_by_id
 from .schemas import Product, ProductCreate, ProductUpdate, ProductPartial

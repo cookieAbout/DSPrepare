@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import (
     async_scoped_session
 )
 from asyncio import current_task
-from FastAPITry.core.config import settings
+from core.config import settings
 
 
 class DBHelper:

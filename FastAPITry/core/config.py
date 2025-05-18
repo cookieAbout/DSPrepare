@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     """ Позволяет использовать env, брать от туда переменные, и валидацию """
     api_v1_prefix: str = '/api/v1'
     db_url: str = f'sqlite+aiosqlite:///{BASE_DIR}/db.sqlite3'
-    db_echo: bool = True  # True только для отладки
+    db_echo: bool = False  # True только для отладки
 
 
 settings = Settings()

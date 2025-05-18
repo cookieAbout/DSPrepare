@@ -2,7 +2,7 @@
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from FastAPITry.core.models import Product
+from core.models import Product
 from .schemas import ProductCreate, ProductUpdate, ProductPartial
 
 
