@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession,
     create_async_engine,
     async_sessionmaker,
-    async_scoped_session
+    async_scoped_session,
 )
 from asyncio import current_task
 from core.config import settings
@@ -22,7 +22,7 @@ class DBHelper:
         )
 
     def get_scoped_session(self):
-        """ Можно использовать в session_dependency в качестве сессии без контекстного менеджера """
+        """Можно использовать в session_dependency в качестве сессии без контекстного менеджера"""
         session = async_scoped_session(
             session_factory=self.session_factory,
             scopefunc=current_task,
@@ -40,4 +40,4 @@ class DBHelper:
         await session.close()
 
 
-db_helper = DBHelper(url=settings.db_url, echo=settings.db_echo)
+db_helper = DBHelper(url=settings.db.url, echo=settings.db.echo)
