@@ -1,4 +1,5 @@
-""" Модуль задач с массивами """
+"""Модуль задач с массивами"""
+
 import heapq
 from typing import List
 from itertools import combinations, permutations
@@ -60,7 +61,9 @@ class Solution:
         """
         cnt, curr_sum = 0, 0
         # частота появления остатка
-        mod_count = {0: 1}  # Начинаем с mod_count[0] = 1, потому что пустая сумма — это 0, и она делится на любое k.
+        mod_count = {
+            0: 1
+        }  # Начинаем с mod_count[0] = 1, потому что пустая сумма — это 0, и она делится на любое k.
 
         for i in range(len(nums)):
             curr_sum += nums[i]
@@ -100,7 +103,13 @@ class Solution:
         -100 <= nums[i] <= 100
         """
         ln = len(nums)
-        return sum([(nums[i] + nums[i + 2]) * 2 == nums[i + 1] for i in range(ln) if i + 2 < ln])
+        return sum(
+            [
+                (nums[i] + nums[i + 2]) * 2 == nums[i + 1]
+                for i in range(ln)
+                if i + 2 < ln
+            ]
+        )
 
     def removeDuplicates(self, nums: List[int]) -> int:
         """
@@ -156,10 +165,10 @@ class Solution:
         1 <= digits.length <= 100
         0 <= digits[i] <= 9
         """
-        return [int(res) for res in str(int(''.join([str(i) for i in digits])) + 1)]
+        return [int(res) for res in str(int("".join([str(i) for i in digits])) + 1)]
 
     def findNumbers(self, nums: List[int]) -> int:
-        """ https://leetcode.com/problems/find-numbers-with-even-number-of-digits/description/ """
+        """https://leetcode.com/problems/find-numbers-with-even-number-of-digits/description/"""
         return sum([len(str(n)) % 2 == 0 for n in nums])
 
     def countGoodTriplets(self, arr: List[int], a: int, b: int, c: int) -> int:
@@ -173,7 +182,11 @@ class Solution:
         for i in range(len(arr)):
             for j in range(i + 1, len(arr)):
                 for k in range(j + 1, len(arr)):
-                    if abs(arr[i] - arr[j]) <= a and abs(arr[j] - arr[k]) <= b and abs(arr[i] - arr[k]) <= c:
+                    if (
+                        abs(arr[i] - arr[j]) <= a
+                        and abs(arr[j] - arr[k]) <= b
+                        and abs(arr[i] - arr[k]) <= c
+                    ):
                         res_list.append((arr[i], arr[j], arr[k]))
         return len(res_list)
 
@@ -212,7 +225,11 @@ class Solution:
         1 <= nums[i], k <= 100
         """
         # print(dict(enumerate(nums)), dict(enumerate(nums[1:], start=1)))
-        return sum(nums[i] == nums[j] and (i * j) % k == 0 for i in range(len(nums)) for j in range(i + 1, len(nums)))
+        return sum(
+            nums[i] == nums[j] and (i * j) % k == 0
+            for i in range(len(nums))
+            for j in range(i + 1, len(nums))
+        )
 
     def minTimeToReach(self, moveTime: List[List[int]]) -> int:
         """
@@ -224,7 +241,7 @@ class Solution:
         # Дейкстра
         n, m = len(moveTime), len(moveTime[0])
         goal = (n - 1, m - 1)
-        dist = [[float('inf')] * m for _ in range(n)]
+        dist = [[float("inf")] * m for _ in range(n)]
         dist[0][0] = 0
         heap = [(0, 0, 0)]
         dir = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # направления перемещения
@@ -277,6 +294,27 @@ class Solution:
             return max_num
         return sum([num for num in set(nums) if num > 0])
 
+    def triangleType(self, nums: List[int]) -> str:
+        """
+        https://leetcode.com/problems/type-of-triangle/description/
+        nums.length == 3
+        1 <= nums[i] <= 100
+        """
+        nums = sorted(nums)
+        f_side, s_side, th_side = nums[0], nums[1], nums[2]
+        if f_side == s_side == th_side:
+            return "equilateral"
+        else:
+            if (
+                f_side + s_side > th_side
+                and f_side + th_side > s_side
+                and s_side + th_side > f_side
+            ):
+                return (
+                    "isosceles" if f_side == s_side or s_side == th_side else "scalene"
+                )
+            return "none"
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -315,5 +353,9 @@ print(s.minTimeToReach([[0, 4], [4, 4]]))
 print(s.minTimeToReach([[0, 0, 0], [0, 0, 0]]))
 print(s.totalNumbers([1, 2, 3, 4]))
 print(s.totalNumbers([0, 2, 2]))
-print(L.maxSum([1, 2, 3, 4, 5]))  # 15
-print(L.maxSum([1, 0, 1, 1]))  # 1
+print(s.maxSum([1, 2, 3, 4, 5]))  # 15
+print(s.maxSum([1, 0, 1, 1]))  # 1
+print(s.triangleType([3, 3, 3]))  # equilateral
+print(s.triangleType([3, 4, 5]))  # scalene
+print(s.triangleType([3, 3, 5]))  # isosceles
+print(s.triangleType([8, 4, 4]))  # none
