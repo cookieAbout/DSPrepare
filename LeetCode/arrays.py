@@ -231,39 +231,6 @@ class Solution:
             for j in range(i + 1, len(nums))
         )
 
-    def minTimeToReach(self, moveTime: List[List[int]]) -> int:
-        """
-        https://leetcode.com/problems/find-minimum-time-to-reach-last-room-i/description
-        2 <= n == moveTime.length <= 50
-        2 <= m == moveTime[i].length <= 50
-        0 <= moveTime[i][j] <= 109
-        """
-        # Дейкстра
-        n, m = len(moveTime), len(moveTime[0])
-        goal = (n - 1, m - 1)
-        dist = [[float("inf")] * m for _ in range(n)]
-        dist[0][0] = 0
-        heap = [(0, 0, 0)]
-        dir = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # направления перемещения
-
-        while heap:
-            cost, x, y = heapq.heappop(heap)
-            if (x, y) == goal:
-                return cost
-            if cost > dist[x][y]:
-                continue
-
-            for dx, dy in dir:
-                nx, ny = x + dx, y + dy  # смотрим координаты соседей
-                if 0 <= nx < n and 0 <= ny < m:
-                    new_cost = max(cost, moveTime[nx][ny]) + 1
-
-                    if new_cost < dist[nx][ny]:
-                        dist[nx][ny] = new_cost
-                        heapq.heappush(heap, (new_cost, nx, ny))
-
-        return -1
-
     def totalNumbers(self, digits: List[int]) -> int:
         """
         https://leetcode.com/problems/unique-3-digit-even-numbers/description/
@@ -349,8 +316,6 @@ print(s.buildArray([0, 2, 1, 5, 3, 4]))  # [0,1,2,4,5,3]
 print(s.buildArray([5, 0, 1, 2, 3, 4]))  # [4,5,0,1,2,3]
 print(s.countPairs([3, 1, 2, 2, 2, 1, 3], 2))
 print(s.countPairs([1, 2, 3, 4], 1))
-print(s.minTimeToReach([[0, 4], [4, 4]]))
-print(s.minTimeToReach([[0, 0, 0], [0, 0, 0]]))
 print(s.totalNumbers([1, 2, 3, 4]))
 print(s.totalNumbers([0, 2, 2]))
 print(s.maxSum([1, 2, 3, 4, 5]))  # 15
