@@ -1,4 +1,5 @@
-""" Модуль задач со строками """
+"""Модуль задач со строками"""
+
 from string import ascii_lowercase
 from itertools import groupby
 from typing import List
@@ -7,13 +8,13 @@ from typing import List
 class Solution:
     def romanToInt(self, s: str) -> int:
         rome_to_int = {
-            'I': 1,
-            'V': 5,
-            'X': 10,
-            'L': 50,
-            'C': 100,
-            'D': 500,
-            'M': 1000,
+            "I": 1,
+            "V": 5,
+            "X": 10,
+            "L": 50,
+            "C": 100,
+            "D": 500,
+            "M": 1000,
         }
         lens = len(s)
         if lens == 1:
@@ -50,7 +51,7 @@ class Solution:
         """
         shortest = min(strs, key=len)
         if len(strs) < 1:
-            return ''
+            return ""
 
         for word in strs:
             while not word.startswith(shortest):
@@ -69,9 +70,9 @@ class Solution:
             return False
 
         par_dict = {
-            '(': ')',
-            '{': '}',
-            '[': ']',
+            "(": ")",
+            "{": "}",
+            "[": "]",
         }
 
         pars = []
@@ -90,7 +91,7 @@ class Solution:
         There will be at least one word in s.
         """
         trim_s = s.strip()
-        return trim_s[::-1].index(' ') if ' ' in trim_s else len(trim_s)
+        return trim_s[::-1].index(" ") if " " in trim_s else len(trim_s)
 
     def addBinary(self, a: str, b: str) -> str:
         """
@@ -99,7 +100,7 @@ class Solution:
         a and b consist only of '0' or '1' characters.
         Each string does not contain leading zeros except for the zero itself.
         """
-        return '{0:b}'.format(int(a, 2) + int(b, 2))
+        return "{0:b}".format(int(a, 2) + int(b, 2))
 
     def hasSpecialSubstring(self, s: str, k: int) -> bool:
         """
@@ -117,29 +118,38 @@ class Solution:
         return False
 
     def reverseDegree(self, s: str) -> int:
-        """ https://leetcode.com/problems/reverse-degree-of-a-string/description/ """
+        """https://leetcode.com/problems/reverse-degree-of-a-string/description/"""
         res = 0
         for sch in range(len(s)):
             res += abs(ascii_lowercase.index(s[sch]) - 26) * (sch + 1)
         return res
 
+    def findWordsContaining(self, words: List[str], x: str) -> List[int]:
+        """https://leetcode.com/problems/find-words-containing-character/"""
+        # return [idx for idx, val in enumerate(words) if x in list(val)]  # Лучше по памяти
+        return [
+            idx for idx, val in enumerate(words) if val.find(x) != -1
+        ]  # лучше по скорости
+
 
 s = Solution()
-print(s.romanToInt('III'))
-print(s.romanToInt('LVIII'))
-print(s.romanToInt('MCMXCIV'))
-print(s.romanToInt('IV'))
+print(s.romanToInt("III"))
+print(s.romanToInt("LVIII"))
+print(s.romanToInt("MCMXCIV"))
+print(s.romanToInt("IV"))
 # print(s.strStr('sadbutsad', 'sad'))
 # print(s.strStr('leetcode', 'leeto'))
-print(s.longestCommonPrefix(['flower', 'flow', 'flight']))
-print(s.longestCommonPrefix(['dog', 'racecar', 'car']))
-print(s.isValid('()[]{}'))
-print(s.isValid('(]'))
-print(s.lengthOfLastWord('Hello World'))
-print(s.lengthOfLastWord('   fly me   to   the moon  '))
-print(s.addBinary('11', '1'))
-print(s.addBinary('1010', '1011'))
-print(s.hasSpecialSubstring('abc', 2))
-print(s.hasSpecialSubstring('aaabaaa', 3))
-print(s.reverseDegree('abc'))
-print(s.reverseDegree('zaza'))
+print(s.longestCommonPrefix(["flower", "flow", "flight"]))
+print(s.longestCommonPrefix(["dog", "racecar", "car"]))
+print(s.isValid("()[]{}"))
+print(s.isValid("(]"))
+print(s.lengthOfLastWord("Hello World"))
+print(s.lengthOfLastWord("   fly me   to   the moon  "))
+print(s.addBinary("11", "1"))
+print(s.addBinary("1010", "1011"))
+print(s.hasSpecialSubstring("abc", 2))
+print(s.hasSpecialSubstring("aaabaaa", 3))
+print(s.reverseDegree("abc"))
+print(s.reverseDegree("zaza"))
+print(s.findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "a"))
+print(s.findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "Z"))
