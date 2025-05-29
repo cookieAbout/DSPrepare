@@ -282,6 +282,28 @@ class Solution:
                 )
             return "none"
 
+    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
+        """https://leetcode.com/problems/max-consecutive-ones/description/"""
+        # end = len(nums)
+        # if 0 not in set(nums):
+        #     return end
+        # start, cnt, res = 0, 0, 0
+        # while start < end:
+        #     if nums[start] == 1:
+        #         cnt += 1
+        #     else:
+        #         res, cnt = max(res, cnt), 0
+        #     start += 1
+        # return max(res, cnt)
+        curr, maxc = 0, 0
+        for i in nums:
+            if i == 1:
+                curr += 1
+            else:
+                curr = 0
+            maxc = max(maxc, curr)
+        return maxc
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -324,3 +346,5 @@ print(s.triangleType([3, 3, 3]))  # equilateral
 print(s.triangleType([3, 4, 5]))  # scalene
 print(s.triangleType([3, 3, 5]))  # isosceles
 print(s.triangleType([8, 4, 4]))  # none
+print(s.findMaxConsecutiveOnes([1, 1, 0, 1, 1, 1]))
+print(s.findMaxConsecutiveOnes([1, 0, 1, 1, 0, 1]))
