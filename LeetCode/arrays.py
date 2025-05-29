@@ -304,6 +304,36 @@ class Solution:
             maxc = max(maxc, curr)
         return maxc
 
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        """
+        Тупое решение, но я устала
+        https://leetcode.com/problems/can-place-flowers/description
+        1 <= flowerbed.length <= 2 * 104
+        flowerbed[i] is 0 or 1.
+        There are no two adjacent flowers in flowerbed.
+        0 <= n <= flowerbed.length
+        """
+        arrl = len(flowerbed)
+        if n == 0:
+            return True
+        if arrl <= 1:
+            return flowerbed[0] != n
+        for i, val in enumerate(flowerbed):
+            if i == 0 and val == flowerbed[i + 1] == 0:
+                n -= 1
+                flowerbed[i] = 1
+            elif i + 1 < arrl and flowerbed[i - 1] == val == flowerbed[i + 1] == 0:
+                n -= 1
+                flowerbed[i] = 1
+            elif i == arrl - 1 and flowerbed[i - 1] == val == 0:
+                n -= 1
+                flowerbed[i] = 1
+
+            if n == 0:
+                return True
+
+        return n == 0
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -348,3 +378,5 @@ print(s.triangleType([3, 3, 5]))  # isosceles
 print(s.triangleType([8, 4, 4]))  # none
 print(s.findMaxConsecutiveOnes([1, 1, 0, 1, 1, 1]))
 print(s.findMaxConsecutiveOnes([1, 0, 1, 1, 0, 1]))
+print(s.canPlaceFlowers([0, 1, 0, 0], 1))
+print(s.canPlaceFlowers([1], 0))
