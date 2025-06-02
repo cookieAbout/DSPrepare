@@ -334,6 +334,25 @@ class Solution:
 
         return n == 0
 
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        https://leetcode.com/problems/merge-sorted-array/
+        Do not return anything, modify nums1 in-place instead.
+        """
+        if n == 0:
+            return
+        nums1[m:] = nums2
+        # nums1 = sorted(nums1)
+        for idx in range(m + n):
+            curr_min = nums1[idx]
+            min_idx = idx
+            for j in range(idx, m + n):
+                if nums1[j] < curr_min:
+                    curr_min = nums1[j]
+                    min_idx = j
+            nums1[idx], nums1[min_idx] = nums1[min_idx], nums1[idx]
+        print(nums1)
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -380,3 +399,6 @@ print(s.findMaxConsecutiveOnes([1, 1, 0, 1, 1, 1]))
 print(s.findMaxConsecutiveOnes([1, 0, 1, 1, 0, 1]))
 print(s.canPlaceFlowers([0, 1, 0, 0], 1))
 print(s.canPlaceFlowers([1], 0))
+# s.merge([4, 5, 6, 0, 0, 0], 3, [1, 2, 3], 3)  # [1,2,3,4,5,6]
+# s.merge([1], 1, [], 0)  # [1]
+# s.merge([0], 0, [1], 1)  # [1]
