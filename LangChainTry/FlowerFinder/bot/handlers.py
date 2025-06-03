@@ -1,7 +1,7 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from FlowerFinder.LLM.llm_florist import llm_chain
+# from LLM.llm_florist import llm_chain
 # from database.session import get_db
 
 
@@ -61,10 +61,11 @@ async def cmd_not_found():
     """ Обработчик /not_found """
     pass
 
+#
+# async def chain_flower_query(message: types.Message):
+#     # 1. Получаем ответ от LLM
+#     response = llm_chain(message.text)
 
-async def chain_flower_query(message: types.Message):
-    # 1. Получаем ответ от LLM
-    response = llm_chain(message.text)
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(cmd_start, commands=["start"])
