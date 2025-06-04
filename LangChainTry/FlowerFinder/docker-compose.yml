@@ -1,0 +1,5 @@
+services:
+  app:
+    image: florist_tg_bot
+    env_file:
+      - .env

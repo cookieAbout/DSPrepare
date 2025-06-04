@@ -8,6 +8,7 @@ load_dotenv()
 class Settings(BaseSettings):
     # Токен Telegram-бота
     BOT_TOKEN: str
+    OPENAI_API_KEY: str
 
     # Путь к базе данных SQLite
     DATABASE_URL: str = "sqlite:///flowers.db"
