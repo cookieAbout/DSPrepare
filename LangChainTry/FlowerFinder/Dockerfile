@@ -1,11 +1,15 @@
-FROM python:3.11-alpine
+FROM python:3.11-slim
 
 WORKDIR /app
-# Установка обновлённого pip
-RUN pip install --upgrade pip setuptools wheel
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir --retries 10 --timeout 30 -r requirements.txt
+RUN apt-get update && apt-get install -y curl && \
+    curl -sSL https://install.python-poetry.org | python3 - && \
+    ln -s /root/.local/bin/poetry /usr/local/bin/poetry
+
+COPY pyproject.toml poetry.lock* ./
+
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi
 
 COPY . .
 

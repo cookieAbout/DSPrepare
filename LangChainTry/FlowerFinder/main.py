@@ -53,6 +53,6 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.info("Бот остановлен пользователем")
+        logger.info("\nХорошего дня!")
     except Exception as exept:
         logger.error(f"Неожиданная ошибка: {exept}")

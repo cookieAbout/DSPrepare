@@ -1,7 +1,8 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from LLM.llm_florist import llm_chain
+from LLM.llm_florist import LLMAgent
+
 # from database.session import get_db
 
 
@@ -41,8 +42,11 @@ async def cmd_description(message: types.Message, state: FSMContext):
 
 
 async def cmd_llm_answer(message: types.Message):
-    answer = await llm_chain(message.text)
-    await message.answer(answer)
+    # answer = await llm_chain(message.text)
+    # await message.answer(answer)
+    agent = LLMAgent()
+    response = await agent.get_llm_answer(message.text)
+    await message.answer(response.content)
 
 
 async def cmd_history(message: types.Message):
@@ -68,10 +72,11 @@ async def cmd_not_found():
 
 
 def register_handlers(dp: Dispatcher):
-    dp.register_message_handler(cmd_start, commands=["start"])
-    dp.register_message_handler(cmd_help, commands=["help"])
-    dp.register_message_handler(cmd_description, commands=["enter_description"])
-    dp.register_message_handler(cmd_llm_answer, state=DescriptionState.waiting_for_description)
-    dp.register_message_handler(cmd_history, commands=["history"])
-    dp.register_message_handler(cmd_clear, commands=["clear"])
-    dp.register_message_handler(cmd_not_found, commands=["not_found"])
+    dp.register_message_handler(cmd_llm_answer, commands=["start"])
+    # dp.register_message_handler(cmd_start, commands=["start"])
+    # dp.register_message_handler(cmd_help, commands=["help"])
+    # dp.register_message_handler(cmd_description, commands=["enter_description"])
+    # dp.register_message_handler(cmd_llm_answer, state=DescriptionState.waiting_for_description)
+    # dp.register_message_handler(cmd_history, commands=["history"])
+    # dp.register_message_handler(cmd_clear, commands=["clear"])
+    # dp.register_message_handler(cmd_not_found, commands=["not_found"])
