@@ -2,6 +2,8 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from LLM.llm_florist import LLMAgent
+from bot.keyboards import get_main_keyboard
+
 
 # from database.session import get_db
 
@@ -12,41 +14,39 @@ class DescriptionState(StatesGroup):
 
 async def cmd_start(message: types.Message):
     """ Обработчик команды start """
-    await message.answer("""
-  Привет! Я помогу тебе подобрать цветы для любимого человека, если ты забыл название.
-  Используйте /help для списка команд.
-  """
+    await message.answer("Привет! Я помогу тебе подобрать цветы для любимого человека, если ты забыл название.",
+                         reply_markup=get_main_keyboard()
                          )
 
 
 async def cmd_help(message: types.Message):
-    """ Обработчик команды help """
+    """ Обработчик команды ℹ️ Помощь """
     help_text = """
     Доступные команды:
     /start - Начать работу с ботом
     /help - Показать справку
-    /enter_description - введи описание
     /history - вспомнить, что уже спрашивал
     /clear - очистить историю вопросов
     /not_found - завершить, если цветок так и не найден (запросы будут обработаны в будущем)
     """
-    await message.answer(help_text)
+    await message.answer(help_text, reply_markup=get_main_keyboard())
 
 
-async def cmd_description(message: types.Message, state: FSMContext):
-    """ Обработчик /enter_description """
-    async with state.proxy() as data:
-        data['user_query'] = message.text
+async def cmd_add_descriptions(message: types.Message):
     await DescriptionState.waiting_for_description.set()
-    await message.answer('Введите описание цветка, который ищите:')
+    await message.answer("Ввести описание цветка:")
 
 
-async def cmd_llm_answer(message: types.Message):
-    # answer = await llm_chain(message.text)
-    # await message.answer(answer)
+async def cmd_llm_answer(message: types.Message, state: FSMContext):
+    """ Обработчик команды 🔍 Ввести описание цветка """
     agent = LLMAgent()
-    response = await agent.get_llm_answer(message.text)
-    await message.answer(response.content)
+    try:
+        response = await agent.get_llm_answer(message.text)
+        await message.answer(response.content, reply_markup=get_main_keyboard())
+    except Exception as e:
+        await message.answer(f"Ошибка: {e}")
+
+    await state.finish()
 
 
 async def cmd_history(message: types.Message):
@@ -72,11 +72,10 @@ async def cmd_not_found():
 
 
 def register_handlers(dp: Dispatcher):
-    dp.register_message_handler(cmd_llm_answer, commands=["start"])
-    # dp.register_message_handler(cmd_start, commands=["start"])
-    # dp.register_message_handler(cmd_help, commands=["help"])
-    # dp.register_message_handler(cmd_description, commands=["enter_description"])
-    # dp.register_message_handler(cmd_llm_answer, state=DescriptionState.waiting_for_description)
+    dp.register_message_handler(cmd_start, commands=["start"])
+    dp.register_message_handler(cmd_help, lambda msg: msg.text == "ℹ️ Помощь")
+    dp.register_message_handler(cmd_add_descriptions, lambda msg: msg.text == "🔍 Ввести описание цветка")
+    dp.register_message_handler(cmd_llm_answer, state=DescriptionState.waiting_for_description)
     # dp.register_message_handler(cmd_history, commands=["history"])
     # dp.register_message_handler(cmd_clear, commands=["clear"])
     # dp.register_message_handler(cmd_not_found, commands=["not_found"])
