@@ -10,6 +10,7 @@ from bot.keyboards import get_main_keyboard
 
 class DescriptionState(StatesGroup):
     waiting_for_description = State()
+    confirming = State()
 
 
 async def cmd_start(message: types.Message):
@@ -42,33 +43,32 @@ async def cmd_llm_answer(message: types.Message, state: FSMContext):
     agent = LLMAgent()
     try:
         response = await agent.get_llm_answer(message.text)
+        async with state.proxy() as data:
+            data['description'] = message.text
+            data['enriched'] = response
+
+        await DescriptionState.confirming.set()
         await message.answer(response.content, reply_markup=get_main_keyboard())
     except Exception as e:
         await message.answer(f"Ошибка: {e}")
 
-    await state.finish()
+
+async def cmd_confirm_description(message: types.Message, state: FSMContext):
+    """ Обработчик выхода из цикла поиска цветка """
+    if message.text == "Да, то что нужно!":
+        await message.answer(f"Всегда рад помочь!")
+        await state.finish()
+
+    else:
+        await DescriptionState.waiting_for_description.set()
+        await message.answer("Попробуйте перефразировать описание цветка:")
 
 
-async def cmd_history(message: types.Message):
-    """ Обработчик /history"""
-    pass
-    # db = next(get_db())
-    # histories = get_history(db)
-    # if not histories:
-    #     await message.answer("Вы пока ничего не спрашивали :(")
-    #     return
-    # history_list = "\n".join([f"{history.id}." for history in histories])
-    # await message.answer(f"Ваши запросы:\n{history_list}")
-
-
-async def cmd_clear():
-    """ Обработчик /clear """
-    pass
-
-
-async def cmd_not_found():
+async def cmd_not_found(message: types.Message, state: FSMContext):
     """ Обработчик /not_found """
-    pass
+    await message.answer('Я сохраню описание и подумаю над другими вариантами', reply_markup=get_main_keyboard())
+    await state.finish()
+    # обработка не найденных
 
 
 def register_handlers(dp: Dispatcher):
@@ -76,6 +76,9 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(cmd_help, lambda msg: msg.text == "ℹ️ Помощь")
     dp.register_message_handler(cmd_add_descriptions, lambda msg: msg.text == "🔍 Ввести описание цветка")
     dp.register_message_handler(cmd_llm_answer, state=DescriptionState.waiting_for_description)
-    # dp.register_message_handler(cmd_history, commands=["history"])
-    # dp.register_message_handler(cmd_clear, commands=["clear"])
-    # dp.register_message_handler(cmd_not_found, commands=["not_found"])
+    dp.register_message_handler(
+        cmd_confirm_description,
+        lambda msg: msg.text in ['Да, то что нужно!', 'Не то'],
+        state=DescriptionState.confirming
+    )
+    dp.register_message_handler(cmd_not_found, lambda msg: msg.text == "Так и не нашел. Выйти.")

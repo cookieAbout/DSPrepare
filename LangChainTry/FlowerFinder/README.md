@@ -10,3 +10,6 @@
 ## Инструменты:
 
 Python, LangChain, ChatOpenAI, poetry
+
+## Результаты
+![5334776280362644223.jpg](picture%2F5334776280362644223.jpg)
