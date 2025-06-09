@@ -46,7 +46,8 @@ async def main():
     except Exception as exept:
         logger.error(f"Ошибка при работе бота: {exept}")
     finally:
-        await bot.close()
+        session = await bot.get_session()
+        await session.close()
         logger.info("Бот остановлен")
 
 if __name__ == "__main__":

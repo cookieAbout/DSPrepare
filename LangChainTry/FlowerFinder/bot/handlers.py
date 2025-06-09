@@ -42,7 +42,7 @@ async def cmd_llm_answer(message: types.Message, state: FSMContext):
     """ Обработчик команды 🔍 Ввести описание цветка """
     agent = LLMAgent()
     try:
-        response = await agent.get_llm_answer(message.text)
+        response = await agent.get_llm_answer_with_memory(message.text)
         async with state.proxy() as data:
             data['description'] = message.text
             data['enriched'] = response

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     # Токен Telegram-бота
     BOT_TOKEN: str
     OPENAI_API_KEY: str
+    GIGACHAT_API_PERS: str
 
     # Путь к базе данных SQLite
     DATABASE_URL: str = "sqlite:///flowers.db"
