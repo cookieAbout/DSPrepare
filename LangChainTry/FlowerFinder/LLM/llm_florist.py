@@ -1,4 +1,4 @@
-from langchain.memory import ConversationBufferMemory
+# import uuid
 from langchain.prompts import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
@@ -8,7 +8,7 @@ from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_gigachat import GigaChat
-from config import Settings
+from config import settings
 
 # пример чтения из интернета
 # https://floris22.ru/about-company/blog/projects/advise/cvety-pohozhie-na-romashki.html#zagolovok4
@@ -46,7 +46,7 @@ class LLMAgent:
     def get_gigachat_model(self):
         """"""
         return GigaChat(
-            credentials=Settings().GIGACHAT_API_PERS,
+            credentials=settings.GIGACHAT_API_PERS,
             model="GigaChat-2-Max",
             verify_ssl_certs=False,
             temperature=self.temperature,
@@ -62,7 +62,8 @@ class LLMAgent:
 
     def get_llm_answer_with_memory(self, message: str):
         """ """
-        llm = self.get_gigachat_model()
+        # llm = self.get_gigachat_model()
+        llm = self.get_chat_open_ai_model()
         prompt = self._get_chat_prompt()
         chain = (prompt | llm)
         chain_with_history = RunnableWithMessageHistory(
@@ -72,5 +73,5 @@ class LLMAgent:
         )
         return chain_with_history.ainvoke(
             {'user_query': message},
-            config={"configurable": {"session_id": "1"}}
+            config={"configurable": {"session_id": "1"}},  # str(uuid.uuid4())
         )
