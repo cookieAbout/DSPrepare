@@ -1,4 +1,5 @@
 # import uuid
+import openai
 from langchain.prompts import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
@@ -20,11 +21,10 @@ class LLMAgent:
         self.temperature = 0.7
         self.system_prompt = SystemMessagePromptTemplate.from_template('''
   Ты - вежливый бот-флорист. Твоя задача подсказать пользователю название цветка по его описанию.
-  Выведи до трех вариантов наиболее похожих на описание.
-  Спроси, есть ли среди названных нужный.
-  Если нет, попроси дополнить описание и предложи еще до трех вариантов.
-  Повторяй, пока не найдешь нужный или пользователь не попросит остановиться.
   Игнорирую сообщения, не связанные с описанием цветов.
+  Выведи только название цветка, максимально похожего по описанию, без лишних слов.
+  Выведи сообщением "Это то, что вы искали? (Нажмите кнопку)"
+  Продолжай выводить по одному, пока клиент не нажмет "Да, то что нужно!".
         ''')
         self.human_prompt = HumanMessagePromptTemplate.from_template('{user_query}')
         self.session_ids = {}
@@ -38,6 +38,16 @@ class LLMAgent:
         if session_id not in self.session_ids:
             self.session_ids[session_id] = InMemoryChatMessageHistory()
         return self.session_ids[session_id]
+
+    @staticmethod
+    def get_flower_picture(flower_name: str):
+        """ Генерация изображения цветка """
+        response = openai.images.generate(
+            prompt=flower_name,
+            n=1,
+            size="512x512",
+        )
+        return response.data[0].url
 
     def get_chat_open_ai_model(self):
         """"""

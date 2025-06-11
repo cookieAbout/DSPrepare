@@ -43,6 +43,7 @@ async def cmd_llm_answer(message: types.Message):
         response = await agent.get_llm_answer(message.text)
         await DescriptionState.confirming.set()
         await message.answer(response.content)
+        # await message.reply_photo(photo=agent.get_flower_picture(response.content))
     except Exception as e:
         await message.answer(f"Произошла ошибка при обработке запроса: {str(e)}")
         await DescriptionState.waiting_for_description.set()

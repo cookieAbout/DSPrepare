@@ -5,8 +5,9 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from config import settings
 from bot.handlers import register_handlers
-# from database.models import Base
-# from database.session import engine
+from database.schemas import Base
+from database.session import engine
+
 
 # Настройка логирования
 logging.basicConfig(
@@ -16,12 +17,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Создаем таблицы в базе данных
-# try:
-#     Base.metadata.create_all(bind=engine)
-#     logger.info("База данных успешно инициализирована")
-# except Exception as exept:
-#     logger.error(f"Ошибка при инициализации базы данных: {exept}")
-#     raise
+try:
+    Base.metadata.create_all(bind=engine)
+    logger.info("База данных успешно инициализирована")
+except Exception as exept:
+    logger.error(f"Ошибка при инициализации базы данных: {exept}")
+    raise
 
 # Инициализация бота и диспетчера
 try:
