@@ -353,6 +353,23 @@ class Solution:
             nums1[idx], nums1[min_idx] = nums1[min_idx], nums1[idx]
         print(nums1)
 
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        """
+        https://leetcode.com/problems/maximum-average-subarray-i/
+        не прошло по памяти
+        n == nums.length
+        1 <= k <= n <= 105
+        -104 <= nums[i] <= 104
+        """
+        ln = len(nums)
+        if ln == 1:
+            return nums[0] / k
+        max_sum, i = sum(nums[:k]), 1
+        while i + k <= ln:
+            max_sum = max(max_sum, sum(nums[i:i+k]), sum(nums[ln - k:ln]))
+            i += 1
+        return max_sum / k
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -402,3 +419,5 @@ print(s.canPlaceFlowers([1], 0))
 # s.merge([4, 5, 6, 0, 0, 0], 3, [1, 2, 3], 3)  # [1,2,3,4,5,6]
 # s.merge([1], 1, [], 0)  # [1]
 # s.merge([0], 0, [1], 1)  # [1]
+print(s.findMaxAverage([1, 12, -5, -6, 50, 3], 4))
+print(s.findMaxAverage([0, 4, 0, 3, 2], 1))
