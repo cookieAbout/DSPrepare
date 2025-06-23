@@ -131,6 +131,41 @@ class Solution:
             idx for idx, val in enumerate(words) if val.find(x) != -1
         ]  # лучше по скорости
 
+    def divideString(self, s: str, k: int, fill: str) -> List[str]:
+        """
+            https://leetcode.com/problems/divide-a-string-into-groups-of-size-k/
+            1 <= s.length <= 100
+            s consists of lowercase English letters only.
+            1 <= k <= 100
+            fill is a lowercase English letter.
+        """
+        res = [s[idx:idx+k] for idx in range(0, len(s), k)]
+        last = k - len(res[-1])
+        if last > 0:
+            res[-1] = res[-1] + fill * last
+        return res
+
+    def largeGroupPositions(self, s: str) -> List[List[int]]:
+        """ https://leetcode.com/problems/positions-of-large-groups/description/
+        решение херня, устала думать
+        """
+        # return sorted(intervals, key=lambda x: x[0])  # итак по порядку
+        curr_idx, cnt = 0, 1
+        interval = []
+        for idx in range(1, len(s)):
+            if s[curr_idx] == s[idx]:
+                cnt += 1
+
+                if idx == len(s) - 1 and cnt >= 3:
+                    interval.append([curr_idx, curr_idx + cnt - 1])
+            else:
+                if cnt >= 3:
+                    interval.append([curr_idx, curr_idx + cnt - 1])
+                curr_idx = idx
+                cnt = 1
+
+        return interval
+
 
 s = Solution()
 print(s.romanToInt("III"))
@@ -153,3 +188,7 @@ print(s.reverseDegree("abc"))
 print(s.reverseDegree("zaza"))
 print(s.findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "a"))
 print(s.findWordsContaining(["abc", "bcd", "aaaa", "cbc"], "Z"))
+print(s.divideString('abcdefghij', 3, 'x'))
+print(s.divideString('a', 4, 's'))
+print(s.largeGroupPositions('aaa'))
+print(s.largeGroupPositions('abcdddeeeeaabbbcd'))
