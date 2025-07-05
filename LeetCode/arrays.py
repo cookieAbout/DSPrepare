@@ -1,6 +1,6 @@
 """Модуль задач с массивами"""
 
-import heapq
+from collections import Counter
 from typing import List
 from itertools import combinations, permutations
 
@@ -370,6 +370,10 @@ class Solution:
             i += 1
         return max_sum / k
 
+    def findLucky(self, arr: List[int]) -> int:
+        """ https://leetcode.com/problems/find-lucky-integer-in-an-array/ """
+        return max([val for key, val in Counter(arr).items() if key == val] or [-1])
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -421,3 +425,4 @@ print(s.canPlaceFlowers([1], 0))
 # s.merge([0], 0, [1], 1)  # [1]
 print(s.findMaxAverage([1, 12, -5, -6, 50, 3], 4))
 print(s.findMaxAverage([0, 4, 0, 3, 2], 1))
+print(s.findLucky([1, 2, 2, 3, 3, 3]))
