@@ -177,6 +177,21 @@ class Solution:
                 curr = word[idx]
         return cnt
 
+    def concatHex36(self, n: int) -> str:
+        """ https://leetcode.com/contest/biweekly-contest-160/problems/hexadecimal-and-hexatrigesimal-conversion/ """
+        # return np.base_repr(n ** 2, 16) + np.base_repr(n ** 3, 36)
+        def to_base_on(digits, num, base):
+            if num == 0:
+                return "0"
+            res = []
+            while num > 0:
+                res.append(digits[num % base])
+                num = num // base
+            return ''.join(reversed(res))
+
+        return (to_base_on('0123456789ABCDEF', n ** 2, 16) +
+                to_base_on('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', n ** 3, 36))
+
 
 s = Solution()
 print(s.romanToInt("III"))
@@ -205,3 +220,4 @@ print(s.largeGroupPositions('aaa'))
 print(s.largeGroupPositions('abcdddeeeeaabbbcd'))
 print(s.possibleStringCount('abbcccc'))
 print(s.possibleStringCount('abcd'))
+print(s.concatHex36(36))
