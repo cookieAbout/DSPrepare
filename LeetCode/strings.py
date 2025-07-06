@@ -1,4 +1,5 @@
 """Модуль задач со строками"""
+import re
 
 from string import ascii_lowercase
 from itertools import groupby
@@ -177,6 +178,15 @@ class Solution:
                 curr = word[idx]
         return cnt
 
+    def validateCoupons(self, code: List[str], businessLine: List[str], isActive: List[bool]): # -> List[str]:
+        """ https://leetcode.com/contest/weekly-contest-457/problems/coupon-code-validator/ """
+        valid_list = sorted([
+            (businessLine[idx], code[idx]) for idx in range(len(code))
+            if isActive[idx] and businessLine[idx] in ["electronics", "grocery", "pharmacy", "restaurant"]
+               and code[idx] and bool(re.fullmatch(r'\w+', code[idx]))
+        ])
+        return [code_i[1] for code_i in valid_list]
+
 
 s = Solution()
 print(s.romanToInt("III"))
@@ -205,3 +215,4 @@ print(s.largeGroupPositions('aaa'))
 print(s.largeGroupPositions('abcdddeeeeaabbbcd'))
 print(s.possibleStringCount('abbcccc'))
 print(s.possibleStringCount('abcd'))
+print(s.validateCoupons(["1OFw","0MvB"], ["electronics","pharmacy"], [True, True]))
