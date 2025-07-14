@@ -1,8 +1,14 @@
 """Модуль задач с массивами"""
 
 from collections import Counter
-from typing import List
+from typing import List, Optional
 from itertools import combinations, permutations
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 class Solution:
@@ -374,6 +380,14 @@ class Solution:
         """ https://leetcode.com/problems/find-lucky-integer-in-an-array/ """
         return max([val for key, val in Counter(arr).items() if key == val] or [-1])
 
+    def getDecimalValue(self, head: Optional[ListNode]) -> int:
+        """ https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/ """
+        result = []
+        while head:
+            result.append(str(head.val))
+            head = head.next
+        return int(''.join(result), 2)
+
 
 s = Solution()
 print(s.twoSum([2, 7, 11, 15], 9))
@@ -426,3 +440,7 @@ print(s.canPlaceFlowers([1], 0))
 print(s.findMaxAverage([1, 12, -5, -6, 50, 3], 4))
 print(s.findMaxAverage([0, 4, 0, 3, 2], 1))
 print(s.findLucky([1, 2, 2, 3, 3, 3]))
+node3 = ListNode(1)
+node2 = ListNode(0, node3)
+node = ListNode(1, node2)
+print(s.getDecimalValue(node))
