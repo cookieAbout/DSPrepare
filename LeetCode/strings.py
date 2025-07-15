@@ -187,6 +187,19 @@ class Solution:
         ])
         return [code_i[1] for code_i in valid_list]
 
+    def isValidWord(self, word: str) -> bool:
+        """ https://leetcode.com/problems/valid-word/ """
+        vowels = {'a', 'e', 'i', 'o', 'u',}
+        word_set = set(word.lower()) - set(map(lambda x: str(x), range(10)))
+
+        if len(word) >= 3 and (bool(word_set & vowels) and bool(word_set - vowels)):
+            for w in word_set:
+                if not 96 < ord(w) < 123:
+                    return False
+            return True
+
+        return False
+
 
 s = Solution()
 print(s.romanToInt("III"))
@@ -216,3 +229,4 @@ print(s.largeGroupPositions('abcdddeeeeaabbbcd'))
 print(s.possibleStringCount('abbcccc'))
 print(s.possibleStringCount('abcd'))
 print(s.validateCoupons(["1OFw","0MvB"], ["electronics","pharmacy"], [True, True]))
+print(s.isValidWord('a3$e'))
